@@ -4,11 +4,12 @@ const Navbar = () => {
   return (
     <nav className="flex justify-center py-[10px] bg-secondary">
       <div className="flex items-center">
-        <img src="/logo.png" className="w-[60px] h-[60px] mr-[10px]" />
+        <img src="/logo.png" className="w-[50px] h-[50px] mr-[10px]" />
 
-        <h1 className="text-primary">
-          <span className="text-[rgb(0,135,118)]">Green</span>Plum Cluster
-        </h1>
+        <div className="text-primary text-[30px]">
+          <span className="text-[rgb(0,135,118)] text-[30px]">Green</span>Plum
+          Cluster
+        </div>
       </div>
     </nav>
   );
