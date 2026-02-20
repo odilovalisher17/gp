@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from schemas.airflow import Dag
+from schemas.airflow_schema import Dag
 from services.airflow.create_dag import create_dag
 
 router = APIRouter()
