@@ -1,5 +1,5 @@
 import React from "react";
-import { DagForm } from "./DagForm";
+import { DagForm } from "./elements/DagForm";
 
 const NewDagPage = () => {
   return (

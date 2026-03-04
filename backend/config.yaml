@@ -1,0 +1,74 @@
+tables:
+- source_db: IABS STBY
+  source_schema: ibs
+  source_table: SALDO
+  target_schema: ibs
+  target_table: saldo
+  update_type: increment
+  key_column: oper_day
+  chunk_size: 100000
+  backfilling: false
+  ddl:
+  - column_id: 1
+    column_name: ID
+    source_col: ID
+  - column_id: 2
+    column_name: OPER_DAY
+    source_col: OPER_DAY
+  - column_id: 3
+    column_name: ACCOUNT_CODE
+    source_col: ACCOUNT_CODE
+  - column_id: 4
+    column_name: CODE_FILIAL
+    source_col: CODE_FILIAL
+  - column_id: 5
+    column_name: BALANCE_OUT
+    source_col: BALANCE_OUT
+  - column_id: 6
+    column_name: SALDO_IN
+    source_col: SALDO_IN
+  - column_id: 7
+    column_name: SALDO_OUT
+    source_col: SALDO_OUT
+  - column_id: 8
+    column_name: SALDO_EQUIVAL_IN
+    source_col: SALDO_EQUIVAL_IN
+  - column_id: 9
+    column_name: SALDO_EQUIVAL_OUT
+    source_col: SALDO_EQUIVAL_OUT
+  - column_id: 10
+    column_name: TURNOVER_DEBIT
+    source_col: TURNOVER_DEBIT
+  - column_id: 11
+    column_name: TURNOVER_CREDIT
+    source_col: TURNOVER_CREDIT
+  - column_id: 12
+    column_name: TURNOVER_ALL_DEBIT
+    source_col: TURNOVER_ALL_DEBIT
+  - column_id: 13
+    column_name: TURNOVER_ALL_CREDIT
+    source_col: TURNOVER_ALL_CREDIT
+  - column_id: 14
+    column_name: LEAD_LAST_DATE
+    source_col: LEAD_LAST_DATE
+  - column_id: 15
+    column_name: NEXT_DATE
+    source_col: NEXT_DATE
+  - column_id: 16
+    column_name: SUBCOA_CODE
+    source_col: SUBCOA_CODE
+  - column_id: 17
+    column_name: BRANCH_ID
+    source_col: BRANCH_ID
+  - column_id: 18
+    column_name: LOCAL_CODE
+    source_col: LOCAL_CODE
+  conflict_action: do_update
+  conflict_cols:
+  - OPER_DAY
+  - ID
+  conflict_set:
+  - - SALDO_EQUIVAL_OUT
+    - SALDO_OUT
+  - - SALDO_EQUIVAL_OUT
+    - SALDO_OUT
