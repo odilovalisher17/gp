@@ -6,18 +6,7 @@ import traceback
 def create_dag(req, manager, gp_db):
     try:
         new_table = req.dict()
-        # print(req.dict())
-        # print(generate_create_table(
-        #         new_table['target_schema'], 
-        #         new_table['target_table'], 
-        #         new_table['ddl'], 
-        #         new_table['primary_keys'], 
-        #         new_table['distribution_keys'],
-        #         new_table['partition'],
-        #         new_table['partition_details'],
-        #         new_table['with_config']
-        #     )
-        # )
+
         if not new_table['target_table_created']:
             gp_db.execute(
                 text(generate_create_table(

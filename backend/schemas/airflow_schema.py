@@ -8,7 +8,7 @@ class Dag(BaseModel):
     target_table: str
     source_ddl: list
     update_type: str
-    key_column: str
+    key_col: str
     chunk_size: int
     backfilling: bool
     target_table_created: bool
