@@ -102,12 +102,12 @@ const formSchema = z
       .optional(),
 
     update_type: z.string(),
-    key_column: z.string(),
+    key_col: z.string(),
     backfilling: z.boolean(),
     chunk_size: z.number(),
     conflict_cols: z.array(z.string()).min(1),
     conflict_action: z.string(),
-    conflict_set: z.array(z.array(z.string()).min(2)).optional(),
+    conflict_set: z.array(z.array(z.string()).optional()).optional(),
   })
   .superRefine((data, ctx) => {
     if (
@@ -482,7 +482,7 @@ export function DagForm() {
               />
 
               <Controller
-                name="key_column"
+                name="key_col"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} className="flex-row">
@@ -500,49 +500,6 @@ export function DagForm() {
                       placeholder="Key Column name"
                       autoComplete="off"
                     />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-
-              <Controller
-                name="backfilling"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="flex-row">
-                    <FieldLabel
-                      htmlFor="form-rhf-demo-title"
-                      className="!w-[10%]"
-                    >
-                      Backfilling
-                    </FieldLabel>
-
-                    <div
-                      className="flex gap-[20px]"
-                      onClick={() => field.onChange((ch) => !ch)}
-                    >
-                      <div className="flex items-center">
-                        <Checkbox
-                          id="terms-checkbox"
-                          name="terms-checkbox"
-                          className="mr-[10px]"
-                          checked={field.value === true}
-                        />
-                        <Label>Yes</Label>
-                      </div>
-
-                      <div className="flex items-center">
-                        <Checkbox
-                          id="terms-checkbox"
-                          name="terms-checkbox"
-                          className="mr-[10px]"
-                          checked={field.value === false}
-                        />
-                        <Label>No</Label>
-                      </div>
-                    </div>
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -607,7 +564,7 @@ export function DagForm() {
                                 <CommandItem
                                   key={option}
                                   onSelect={() => {
-                                    const newValue = field.value.includes(
+                                    const newValue = field?.value?.includes(
                                       option,
                                     )
                                       ? field.value.filter((v) => v !== option)
@@ -829,6 +786,48 @@ export function DagForm() {
                   )}
                 />
               )}
+
+              <Controller
+                name="backfilling"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid} className="flex-row">
+                    <FieldLabel
+                      htmlFor="form-rhf-demo-title"
+                      className="!w-[10%]"
+                    >
+                      Backfilling
+                    </FieldLabel>
+
+                    <div className="flex gap-[20px]">
+                      <div className="flex items-center">
+                        <Checkbox
+                          id="terms-checkbox"
+                          name="terms-checkbox"
+                          className="mr-[10px]"
+                          onCheckedChange={() => field.onChange(true)}
+                          checked={field.value === true}
+                        />
+                        <Label>Yes</Label>
+                      </div>
+
+                      <div className="flex items-center">
+                        <Checkbox
+                          id="terms-checkbox"
+                          name="terms-checkbox"
+                          className="mr-[10px]"
+                          onCheckedChange={() => field.onChange(false)}
+                          checked={field.value === false}
+                        />
+                        <Label>No</Label>
+                      </div>
+                    </div>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
 
               <Controller
                 name="target_table_created"
@@ -1179,10 +1178,7 @@ export function DagForm() {
                         </FieldLabel>
 
                         <div className="grid grid-cols-[1fr_1fr_1fr_1fr]">
-                          <div
-                            className="flex items-center justify-center gap-[20px] border-[2px] px-[10px] py-[5px]"
-                            onClick={() => field.onChange((ch) => !ch)}
-                          >
+                          <div className="flex items-center justify-center gap-[20px] border-[2px] px-[10px] py-[5px]">
                             <div>Append Optimized : </div>
 
                             <div className="flex items-center">
@@ -1190,6 +1186,11 @@ export function DagForm() {
                                 id="terms-checkbox"
                                 name="terms-checkbox"
                                 className="mr-[10px]"
+                                onCheckedChange={() => {
+                                  const newField = field.value;
+                                  newField.appendoptimized = true;
+                                  field.onChange(newField);
+                                }}
                                 checked={field.value.appendoptimized === true}
                               />
                               <Label>True</Label>
@@ -1200,6 +1201,11 @@ export function DagForm() {
                                 id="terms-checkbox"
                                 name="terms-checkbox"
                                 className="mr-[10px]"
+                                onCheckedChange={() => {
+                                  const newField = field.value;
+                                  newField.appendoptimized = false;
+                                  field.onChange(newField);
+                                }}
                                 checked={field.value.appendoptimized === false}
                               />
                               <Label>False</Label>
@@ -1211,7 +1217,11 @@ export function DagForm() {
 
                             <Select
                               aria-invalid={fieldState.invalid}
-                              onValueChange={field.onChange}
+                              onValueChange={(value) => {
+                                const newField = field.value;
+                                newField.orientation = value;
+                                field.onChange(newField);
+                              }}
                               value={field.value.orientation}
                             >
                               <SelectTrigger className="w-full">
@@ -1232,7 +1242,11 @@ export function DagForm() {
 
                             <Select
                               aria-invalid={fieldState.invalid}
-                              onValueChange={field.onChange}
+                              onValueChange={(value) => {
+                                const newField = field.value;
+                                newField.compresstype = value;
+                                field.onChange(newField);
+                              }}
                               value={field.value.compresstype}
                             >
                               <SelectTrigger className="w-full">
